@@ -12,12 +12,16 @@ export const Register =  async (req: Request, res: Response) => {
     const {error} = RegisterValidation.validate(body);
 
     if (error) {
-        return res.status(400).send(error.details)
+        return res.status(400).send({
+            success: false,
+            message: error.details
+        })
     }
 
     /** Check if the password match */
     if (body.password !== body.password_confirm) {
         return res.status(400).send({
+            success: false,
             message: "Password does not match"
         });
     }
@@ -43,13 +47,15 @@ export const Login = async (req:Request, res:Response) => {
     /** Check if user exist */
     if(!user){
         return res.status(404).send({
-            message: "Invalid credentials"
+            message: "Invalid credentials",
+            success: false
         })
     }
 
     if(!await bcryptjs.compare(req.body.password, user.password)){
         return res.status(400).send({
-            message: "Invalid credentials"
+            message: "Invalid credentials",
+            success: false
         })
     }
 
