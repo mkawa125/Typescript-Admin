@@ -3,6 +3,7 @@ import { Request, Response } from "express"
 import { RegisterValidation } from "./validation/register.validation";
 import { getManager } from "typeorm";
 import  bcryptjs  from "bcryptjs";
+import { sign } from "jsonwebtoken";
 
 export const Register =  async (req: Request, res: Response) => {
 
@@ -52,6 +53,7 @@ export const Login = async (req:Request, res:Response) => {
         })
     }
 
+    /** Check if passwords match */
     if(!await bcryptjs.compare(req.body.password, user.password)){
         return res.status(400).send({
             message: "Invalid credentials",
@@ -59,8 +61,21 @@ export const Login = async (req:Request, res:Response) => {
         })
     }
 
+    const payload = {id: user.id}
+
+    const token = sign(payload, "secret")
+
+    res.cookie("jwt", token, {
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000 // 1 day
+    });
+
     const {password, ...data} = user;
 
-    res.send(data);
+    return res.status(200).send({
+        message: "Success",
+        developerMessage: "User authenticated",
+        data: data,
+    });
 
 }
