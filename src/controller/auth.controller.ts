@@ -63,7 +63,7 @@ export const Login = async (req:Request, res:Response) => {
 
     const payload = {id: user.id}
 
-    const token = sign(payload, "secret")
+    const token = sign(payload, process.env.SECRET_KEY)
 
     res.cookie("jwt", token, {
         httpOnly: true,
@@ -85,7 +85,7 @@ export const AuthenticateUser = async (req:Request, res:Response) => {
 
     try {
         const jwt = req.cookies['jwt'];
-        const payload: any = verify(jwt, "secret");
+        const payload: any = verify(jwt, process.env.SECRET_KEY);
         if (!payload) {
             return res.status(401).send({
                 message: "Unauthenticated",
