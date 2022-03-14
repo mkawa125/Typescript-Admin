@@ -7,37 +7,46 @@ import { sign, verify } from "jsonwebtoken";
 
 export const Register =  async (req: Request, res: Response) => {
 
-    const body = req.body;
+    try {
+        const body = req.body;
 
-    /** Validate the request inputs */
-    const {error} = RegisterValidation.validate(body);
+        /** Validate the request inputs */
+        const {error} = RegisterValidation.validate(body);
 
-    if (error) {
-        return res.status(400).send({
-            success: false,
-            message: error.details
-        })
-    }
+        if (error) {
+            return res.status(400).send({
+                success: false,
+                message: error.details
+            })
+        }
 
-    /** Check if the password match */
-    if (body.password !== body.password_confirm) {
-        return res.status(400).send({
-            success: false,
-            message: "Password does not match"
+        /** Check if the password match */
+        if (body.password !== body.password_confirm) {
+            return res.status(400).send({
+                success: false,
+                message: "Password does not match"
+            });
+        }
+
+        const repository = getManager().getRepository(User);
+
+        const {password, ...user} = await repository.save({
+            first_name: body.first_name,
+            last_name: body.last_name,
+            email: body.email,
+            password: await bcryptjs.hash(body.password, 10),
+        });
+        return res.status(200).send({
+            message: "Success",
+            developerMessage: "User Created Successfully",
+            data: user,
+        });
+    } catch (error) {
+        return res.status(500).send({
+            message: "Registration failed",
+            developerMessage: error.message
         });
     }
-
-    const repository = getManager().getRepository(User);
-
-    const {password, ...user} = await repository.save({
-        first_name: body.first_name,
-        last_name: body.last_name,
-        email: body.email,
-        password: await bcryptjs.hash(body.password, 10),
-    });
-
-    res.send(user);
-
 }
 
 export const Login = async (req:Request, res:Response) => {
