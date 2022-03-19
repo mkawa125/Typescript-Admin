@@ -1,5 +1,5 @@
 import bcryptjs from 'bcryptjs';
-import { getAllUsers, createUser, getUserById, updateUserById } from './userService';
+import { getAllUsers, createUser, getUserById, updateUserById, deleteUserById } from './userService';
 import { Request, Response } from "express"
 
 
@@ -21,7 +21,7 @@ export const Users = async (req:Request , res:Response) => {
     }
 }
 
-export const CreateUser =async (req:Request , res:Response) => {
+export const CreateUser = async (req:Request , res:Response) => {
     try {
         const user = await createUser(req.body);
         return res.status(201).json({
@@ -38,7 +38,7 @@ export const CreateUser =async (req:Request , res:Response) => {
     }
 }
 
-export const GetUser =async (req:Request , res:Response) => {
+export const GetUser = async (req:Request , res:Response) => {
     try {
         const user = await getUserById(req.params.id)
         return res.status(200).json({
@@ -55,12 +55,29 @@ export const GetUser =async (req:Request , res:Response) => {
     }
 }
 
-export const UpdateUser =async (req:Request, res:Response) => {
+export const UpdateUser = async (req:Request, res:Response) => {
     try {
         const user = await updateUserById(req.params.id, req.body)
-        return res.status(200).json({
+        return res.status(202).json({
             userMessage: 'Success',
             developerMessage: "User updated successfully",
+            data: user
+        })
+    } catch (error) {
+        return res.status(500).json({
+            userMessage: 'Something went wrong, contact the system admin',
+            developerMessage: error.message,
+            success: false
+        });
+    }
+}
+
+export const DeleteUser =async (req:Request, res:Response) => {
+    try {
+        const user = await deleteUserById(req.params.id)
+        return res.status(204).json({
+            userMessage: 'Success',
+            developerMessage: "User deleted successfully",
             data: user
         })
     } catch (error) {

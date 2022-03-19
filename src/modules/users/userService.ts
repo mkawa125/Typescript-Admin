@@ -31,15 +31,19 @@ export const getUserById = async (id:any) => {
     return user;
 }
 
-export const updateUserById =async (userId:any, userDetails:any) => {
+export const updateUserById = async (userId:any, userDetails:any) => {
     const repository = getManager().getRepository(User)
     const {role_id, ...body} = userDetails;
     await repository.update(userId, {
         ...body,
 
     });
-
     const {password, ...data} = await repository.findOne(userId);
-
     return data;
+}
+
+export const deleteUserById =async (userId:any) => {
+    const repository = getManager().getRepository(User);
+    await repository.delete(userId);
+    return null;
 }
