@@ -1,4 +1,5 @@
-import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
+import { Role } from './roleEntity';
+import {Column, Entity, JoinColumn, ManyToMany, PrimaryGeneratedColumn} from "typeorm";
 
 @Entity()
 
@@ -19,4 +20,8 @@ export class User{
 
     @Column()
     password: string;
+
+    @ManyToMany(() => Role)
+    @JoinColumn({name: 'role_id'})
+    role: Role;
 }
