@@ -111,3 +111,49 @@ export const Logout = async (req:Request, res:Response) => {
         developerMessage: "You have successfully logged out",
     });    
 }
+
+export const UpdateInfo =async (req:Request, res:Response) => {
+
+    const user = req['user'];
+
+    const repository = getManager().getRepository(User);
+
+    await repository.update(user.id, req.body);
+
+    const {password, ...data} = await repository.findOne(user.id);
+
+    return res.status(200).send({
+        message: "Success",
+        developerMessage: "Success",
+        user: data,
+    });
+    
+}
+
+export const UpdatePassword =async (req:Request, res:Response) => {
+
+    const user = req['user'];
+
+    /** Check if passwords match */
+    if (req.body.password !== req.body.password_confirm) {
+        return res.status(400).send({
+            message: "Passwords does not match",
+            success: false
+        })
+    }
+
+    const repository = getManager().getRepository(User);
+
+    await repository.update(user.id, {
+        password: await bcryptjs.hash(req.body.password, 10)
+    });
+
+    const {password, ...data} = user;
+
+    return res.status(200).send({
+        message: "Password changed successfully",
+        developerMessage: "Password changed successfully",
+        user: data,
+    }); 
+    
+}
