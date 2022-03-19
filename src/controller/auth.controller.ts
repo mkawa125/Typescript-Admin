@@ -157,3 +157,15 @@ export const UpdatePassword =async (req:Request, res:Response) => {
     }); 
     
 }
+
+export const DeleteUser =async (req:Request, res:Response) => {
+
+    const repository = getManager().getRepository(User);
+
+    await repository.delete(req.params.id)
+
+    return res.status(200).send({
+        message: "User deleted successfully",
+        developerMessage: "User deleted successfully"
+    }); 
+}

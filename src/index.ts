@@ -1,3 +1,4 @@
+import { userRoutes } from './modules/users/userRoutes';
 require('dotenv').config();
 
 import express, {Request, Response} from 'express';
@@ -20,6 +21,7 @@ createConnection().then(connection => {
     }));
 
     routes(app);
+    userRoutes(app);
 
     /** Listen to specific port */
     app.listen(5000, () => {
