@@ -30,3 +30,16 @@ export const getUserById = async (id:any) => {
     const {password, ...user} =  await repository.findOne(id);
     return user;
 }
+
+export const updateUserById =async (userId:any, userDetails:any) => {
+    const repository = getManager().getRepository(User)
+    const {role_id, ...body} = userDetails;
+    await repository.update(userId, {
+        ...body,
+
+    });
+
+    const {password, ...data} = await repository.findOne(userId);
+
+    return data;
+}
