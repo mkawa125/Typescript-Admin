@@ -1,5 +1,5 @@
 import bcryptjs from 'bcryptjs';
-import { getAllUsers, createUser } from './userService';
+import { getAllUsers, createUser, getUserById } from './userService';
 import { Request, Response } from "express"
 
 
@@ -27,6 +27,23 @@ export const CreateUser =async (req:Request , res:Response) => {
         return res.status(201).json({
             userMessage: 'Success',
             developerMessage: "User created successfully",
+            data: user
+        })
+    } catch (error) {
+        return res.status(500).json({
+            userMessage: 'Something went wrong, contact the system admin',
+            developerMessage: error.message,
+            success: false
+        });
+    }
+}
+
+export const GetUser =async (req:Request , res:Response) => {
+    try {
+        const user = await getUserById(req.params.id)
+        return res.status(200).json({
+            userMessage: 'Success',
+            developerMessage: "User retrived successfully",
             data: user
         })
     } catch (error) {

@@ -12,7 +12,7 @@ export const getAllUsers = async () => {
     });
 }
 
-export const createUser =async  (data) => {
+export const createUser = async  (data:any) => {
     
     const {role_id, ...body} = data;
     const hashedPassword = await bcryptjs.hash("1234", 10);
@@ -22,5 +22,11 @@ export const createUser =async  (data) => {
         password: hashedPassword
     });
 
+    return user;
+}
+
+export const getUserById = async (id:any) => {
+    const repository = getManager().getRepository(User)
+    const {password, ...user} =  await repository.findOne(id);
     return user;
 }
