@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn, Timestamp } from 'typeorm';
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, Timestamp, UpdateDateColumn } from 'typeorm';
 
 @Entity({name: 'roles'})
 export class Role {
@@ -6,14 +6,11 @@ export class Role {
     id: number;
 
     @Column()
-    name: string
+    name: string;
 
-    // @Column()
-    // created_at: Timestamp
+    @CreateDateColumn()
+    created_at: Timestamp;
 
-    // @Column()
-    // updated_at: Timestamp
-
-    // @Column()
-    // deleted_at: Timestamp
+    @UpdateDateColumn()
+    updated_at: Timestamp
 }

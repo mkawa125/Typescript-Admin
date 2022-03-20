@@ -5,7 +5,9 @@ import { User } from './../../entity/user.entity';
 export const getAllUsers = async () => {
 
     const repository = getManager().getRepository(User)
-    const users =  await repository.find();
+    const users =  await repository.find({
+        relations: ['role']
+    });
     return users.map(user => {
         const {password, ...data} = user;
         return data
@@ -19,7 +21,10 @@ export const createUser = async  (data:any) => {
     const repository = getManager().getRepository(User);
     const {password, ...user} = await repository.save({
         ...body, 
-        password: hashedPassword
+        password: hashedPassword,
+        role: {
+            id: role_id
+        }
     });
 
     return user;
@@ -27,7 +32,9 @@ export const createUser = async  (data:any) => {
 
 export const getUserById = async (id:any) => {
     const repository = getManager().getRepository(User)
-    const {password, ...user} =  await repository.findOne(id);
+    const {password, ...user} =  await repository.findOne(id, {
+        relations: ['role']
+    });
     return user;
 }
 
@@ -36,9 +43,12 @@ export const updateUserById = async (userId:any, userDetails:any) => {
     const {role_id, ...body} = userDetails;
     await repository.update(userId, {
         ...body,
+        role: {id: role_id}
 
     });
-    const {password, ...data} = await repository.findOne(userId);
+    const {password, ...data} = await repository.findOne(userId, {
+        relations: ['role']
+    });
     return data;
 }
 
