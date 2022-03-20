@@ -21,6 +21,7 @@ export class User{
     @Column()
     password: string;
 
+
     @ManyToMany(() => Role)
     @JoinColumn({name: 'role_id'})
     role: Role;
