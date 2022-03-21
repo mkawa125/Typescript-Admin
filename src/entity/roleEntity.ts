@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, Timestamp, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, Generated, PrimaryGeneratedColumn, Timestamp, UpdateDateColumn } from 'typeorm';
 
 @Entity({name: 'roles'})
 export class Role {
@@ -7,6 +7,12 @@ export class Role {
 
     @Column()
     name: string;
+
+    @Column({
+        unique: true
+    })
+    @Generated("uuid") 
+    uuid: string; 
 
     @CreateDateColumn()
     created_at: Timestamp;
