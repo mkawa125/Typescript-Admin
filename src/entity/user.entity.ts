@@ -25,7 +25,7 @@ export class User{
         unique: true
     }) 
     @Generated("uuid") 
-    uuid: string; 
+    uuid: string;
 
     @ManyToOne(() => Role)
     @JoinColumn({name: 'role_id'})
