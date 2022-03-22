@@ -6,7 +6,6 @@ import { randomInt } from 'crypto';
 createConnection().then(async  connection => {
 
     const repository = getManager().getRepository(Product);
-
     for (let i = 0; i < 30; i++) {
 
         await repository.save({
@@ -16,7 +15,6 @@ createConnection().then(async  connection => {
             price: 20000
         })
     }
-
     process.exit(0)
 
 });
