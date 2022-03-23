@@ -7,6 +7,7 @@ import { routes} from './routes';
 import { Connection, createConnection } from "typeorm";
 import cookieParser from 'cookie-parser';
 import { permissionRoutes } from './modules/auth/permissions/permissionRoutes';
+import { roleRoutes } from './modules/auth/roles/roleRoutes';
 
 createConnection().then(connection => {
     
@@ -23,6 +24,7 @@ createConnection().then(connection => {
     routes(app);
     userRoutes(app);
     permissionRoutes(app);
+    roleRoutes(app);
 
     /** Listen to specific port */
     app.listen(5000, () => {
