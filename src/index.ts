@@ -7,7 +7,6 @@ import { routes} from './routes';
 import { Connection, createConnection } from "typeorm";
 import cookieParser from 'cookie-parser';
 
-
 createConnection().then(connection => {
     
     /** Create express app */
