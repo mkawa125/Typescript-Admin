@@ -6,6 +6,7 @@ import cors from 'cors';
 import { routes} from './routes';
 import { Connection, createConnection } from "typeorm";
 import cookieParser from 'cookie-parser';
+import { permissionRoutes } from './modules/auth/permissions/permissionRoutes';
 
 createConnection().then(connection => {
     
@@ -21,6 +22,7 @@ createConnection().then(connection => {
 
     routes(app);
     userRoutes(app);
+    permissionRoutes(app);
 
     /** Listen to specific port */
     app.listen(5000, () => {
