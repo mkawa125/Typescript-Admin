@@ -1,4 +1,6 @@
-import { Column, CreateDateColumn, Entity, Generated, PrimaryGeneratedColumn, Timestamp, UpdateDateColumn } from 'typeorm';
+import { Permission } from './permissionEntity';
+import { Column, CreateDateColumn, ManyToMany, Entity, Generated, PrimaryGeneratedColumn, Timestamp, UpdateDateColumn, JoinTable } from 'typeorm';
+
 
 @Entity({name: 'roles'})
 export class Role {
@@ -19,4 +21,13 @@ export class Role {
 
     @UpdateDateColumn()
     updated_at: Timestamp
+
+    @ManyToMany( () => Permission )
+    @JoinTable({
+        name: "role_permissions",
+        joinColumn: {name: 'role_id', referencedColumnName: 'id'},
+        inverseJoinColumn: {name: 'permission_id', referencedColumnName: 'id'}
+    })
+    permission: Permission;
+
 }
