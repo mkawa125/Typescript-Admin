@@ -28,3 +28,16 @@ export const getRoleById = async (roleId:any) => {
     });
     return role;
 }
+
+export const updateRoleById =async (roleId:any, userDetails:any) => {
+    const repository = getManager().getRepository(Role)
+    const {name, permissions} = userDetails;
+    const role = await repository.save({
+        id: parseInt(roleId),
+        name,
+        permissions: permissions.map(id => ({id}))
+
+    });
+    
+    return role;
+}
