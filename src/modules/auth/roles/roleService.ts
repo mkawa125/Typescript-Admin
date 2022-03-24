@@ -20,3 +20,11 @@ export const createNewRole = async (userDetails:any) => {
     return role;
 
 }
+
+export const getRoleById = async (roleId:any) => {
+    const repository = getManager().getRepository(Role)
+    const role =  await repository.findOne(roleId, {
+        relations: ['permissions']
+    });
+    return role;
+}
