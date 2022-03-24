@@ -29,7 +29,7 @@ export const getRoleById = async (roleId:any) => {
     return role;
 }
 
-export const updateRoleById =async (roleId:any, userDetails:any) => {
+export const updateRoleById = async (roleId:any, userDetails:any) => {
     const repository = getManager().getRepository(Role)
     const {name, permissions} = userDetails;
     const role = await repository.save({
@@ -40,4 +40,10 @@ export const updateRoleById =async (roleId:any, userDetails:any) => {
     });
     
     return role;
+}
+
+export const deleteRoleById = async (roleId:any) => {
+    const repository = getManager().getRepository(Role);
+    await repository.delete(roleId);
+    return null;
 }

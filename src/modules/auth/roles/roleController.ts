@@ -1,4 +1,4 @@
-import { getAllRoles, createNewRole, getRoleById, updateRoleById } from './roleService';
+import { getAllRoles, createNewRole, getRoleById, updateRoleById, deleteRoleById } from './roleService';
 import { Request, Response } from 'express';
 
 export const getRoles = async (req:Request, res:Response) => {
@@ -81,3 +81,19 @@ export const updateRole = async (req: Request, res:Response) => {
     }
 }
 
+
+export const deleteRole = async (req: Request, res:Response) => {
+    try {
+        const role = await deleteRoleById(req.params.id);
+        return res.status(200).json({
+            userMessage: 'Success',
+            developerMessage: "Role deleted successfully",
+        })
+    } catch (error) {
+        return res.status(500).json({
+            userMessage: 'Something went wrong, contact the system admin',
+            developerMessage: error.message,
+            success: false
+        });
+    }
+}
