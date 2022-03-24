@@ -7,3 +7,16 @@ export const getAllRoles = async () => {
     const roles =  await repository.find();
     return roles;
 }
+
+export const createNewRole = async (userDetails:any) => {
+    
+    const {name, permissions} = userDetails
+    const repository = getManager().getRepository(Role)
+    const role = await repository.save({
+        name, 
+        permissions: permissions.map(id => ({id}))
+    }); 
+    
+    return role;
+
+}
