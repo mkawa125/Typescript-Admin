@@ -22,6 +22,8 @@ export const createUser = async  (data:any) => {
     const {password, ...user} = await repository.save({
         ...body, 
         password: hashedPassword,
+        // created_at: new Date().toString(),
+        // updated_at: new Date().toString(),
         role: {
             id: role_id
         }

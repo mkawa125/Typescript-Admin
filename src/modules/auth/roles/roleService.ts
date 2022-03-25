@@ -13,7 +13,9 @@ export const createNewRole = async (userDetails:any) => {
     const {name, permissions} = userDetails
     const repository = getManager().getRepository(Role)
     const role = await repository.save({
-        name, 
+        name,
+        created_at: new Date().toString(),
+        updated_at: new Date().toString(),
         permissions: permissions.map(id => ({id}))
     }); 
     
