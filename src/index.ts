@@ -1,3 +1,4 @@
+import { productRoutes } from './modules/products/productRoutes';
 import { userRoutes } from './modules/users/userRoutes';
 require('dotenv').config();
 
@@ -25,6 +26,7 @@ createConnection().then(connection => {
     userRoutes(app);
     permissionRoutes(app);
     roleRoutes(app);
+    productRoutes(app);
 
     /** Listen to specific port */
     app.listen(5000, () => {
