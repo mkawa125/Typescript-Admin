@@ -9,7 +9,7 @@ export class Product {
     name: string;
 
     @Column()
-    discription: string;
+    description: string;
 
     @Column()
     image: string;
