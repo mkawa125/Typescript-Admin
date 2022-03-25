@@ -1,11 +1,25 @@
 import { getManager } from 'typeorm';
 import { Product } from '../../entity/productEntity';
 
-export const getAllProducts = async () => {
+export const getAllProducts = async (page:any) => {
+
+    const take = 15;
 
     const repository = getManager().getRepository(Product)
-    const products =  await repository.find();
-    return products;
+    const [data, total] =  await repository.findAndCount({
+        take,
+        skip: (page - 1) * take
+    });
+
+    
+    return {
+        data,
+        meta: {
+            total,
+            page,
+            last_page: Math.ceil(total/take)
+        }
+    };
 }
 
 export const createNewProduct = async  (data:any) => {

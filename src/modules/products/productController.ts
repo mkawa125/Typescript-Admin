@@ -4,11 +4,12 @@ import { Request, Response } from "express"
 export const Products = async (req:Request , res:Response) => {
     
     try {
-        const products = await getAllProducts()
+        const page = parseInt(req.query.page as string || "1")
+        const products = await getAllProducts(page)
         return res.status(200).json({
             userMessage: 'Success',
             developerMessage: "Prodcuts retireved successfully",
-            data: products
+            products
         })
     } catch (error) {
         return res.status(500).json({
