@@ -11,7 +11,11 @@ export const getAllProducts = async () => {
 export const createNewProduct = async  (data:any) => {
     
     const repository = getManager().getRepository(Product);
-    const product = await repository.save(data);
+    const product = await repository.save({
+        ...data,
+        created_at: new Date().toString(),
+        updated_at: new Date().toString()
+    });
 
     return product;
 }
