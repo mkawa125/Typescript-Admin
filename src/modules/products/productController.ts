@@ -113,7 +113,7 @@ export const uploadImage = async (req:Request, res:Response) => {
             return res.status(201).json({
                 userMessage: 'Success',
                 developerMessage: "Image uploaded successfully",
-                url: `http://localhost/5000/uploads/${req.file.filename}`
+                url: `http://localhost/5000/api/products/upload/${req.file.filename}`
             })
         })
         
