@@ -1,5 +1,7 @@
 import { createNewProduct, deleteProductById, getAllProducts, getProductById, updateProductById } from './productService';
 import { Request, Response } from "express"
+import multer from 'multer';
+import { extname } from 'path';
 
 export const Products = async (req:Request , res:Response) => {
     
@@ -79,6 +81,42 @@ export const DeleteProduct =async (req:Request, res:Response) => {
             developerMessage: "Product deleted successfully",
             data: product
         })
+    } catch (error) {
+        return res.status(500).json({
+            userMessage: 'Something went wrong, contact the system admin',
+            developerMessage: error.message,
+            success: false
+        });
+    }
+}
+
+export const uploadImage = async (req:Request, res:Response) => {
+    try {
+        const storage = multer.diskStorage({
+            destination: './uploads',
+            filename(req:Request, file:Express.Multer.File, callback){
+                const randomName =  Math.random().toString(20).substr(2, 12);
+                return callback(null, `${randomName}${extname(file.originalname)}`)
+    
+            }
+        })
+
+        const upload = multer({storage}).single('image');
+        upload(req, res, (error) => {
+            if (error) {
+                return res.status(500).json({
+                    userMessage: 'Something went wrong, contact the system admin',
+                    developerMessage: error,
+                    success: false
+                });
+            }
+            return res.status(201).json({
+                userMessage: 'Success',
+                developerMessage: "Image uploaded successfully",
+                url: `http://localhost/5000/uploads/${req.file.filename}`
+            })
+        })
+        
     } catch (error) {
         return res.status(500).json({
             userMessage: 'Something went wrong, contact the system admin',
