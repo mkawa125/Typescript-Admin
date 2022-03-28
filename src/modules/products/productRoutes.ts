@@ -2,7 +2,6 @@ import { Products, CreateProduct, GetProduct, UpdateProduct, DeleteProduct, uplo
 import express, { Router } from "express";
 import { AuthMiddleware } from "../../middleware/auth.middleware";
 
-
 export const productRoutes = (router: Router) => {
     router.get('/api/products', AuthMiddleware, Products);
     router.post('/api/products/create', AuthMiddleware, CreateProduct);

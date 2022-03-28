@@ -22,6 +22,7 @@ createConnection().then(connection => {
         origin: ["http://localhost:3000"]
     }));
 
+    /** Include external routes */
     routes(app);
     userRoutes(app);
     permissionRoutes(app);
