@@ -1,7 +1,6 @@
 import { Permission } from './permissionEntity';
 import { Column, CreateDateColumn, ManyToMany, Entity, Generated, PrimaryGeneratedColumn, Timestamp, UpdateDateColumn, JoinTable } from 'typeorm';
 
-
 @Entity({name: 'roles'})
 export class Role {
     @PrimaryGeneratedColumn()
@@ -29,5 +28,4 @@ export class Role {
         inverseJoinColumn: {name: 'permission_id', referencedColumnName: 'id'}
     })
     permissions: Permission[];
-
 }

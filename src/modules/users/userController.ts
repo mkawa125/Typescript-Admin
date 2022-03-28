@@ -1,4 +1,3 @@
-import bcryptjs from 'bcryptjs';
 import { getAllUsers, createUser, getUserById, updateUserById, deleteUserById } from './userService';
 import { Request, Response } from "express"
 

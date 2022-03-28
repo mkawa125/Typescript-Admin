@@ -74,6 +74,7 @@ export const Login = async (req:Request, res:Response) => {
 
     const token = sign(payload, process.env.SECRET_KEY)
 
+    /** Set token lifetime for one day */
     res.cookie("jwt", token, {
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000 // 1 day
@@ -92,6 +93,7 @@ export const Login = async (req:Request, res:Response) => {
 
 export const AuthenticateUser = async (req:Request, res:Response) => {
 
+    /** Get authenticated user */
     const {password, ...user} =  await req["user"];
 
         return res.status(200).send({
