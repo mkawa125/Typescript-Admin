@@ -9,7 +9,8 @@ export const Orders = async (req:Request , res:Response) => {
         return res.status(200).json({
             userMessage: 'Success',
             developerMessage: "Orders retireved successfully",
-            orders
+            orders: orders.data,
+            metadata: orders.meta
         })
     } catch (error) {
         return res.status(500).json({
