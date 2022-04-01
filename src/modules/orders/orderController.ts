@@ -69,3 +69,31 @@ export const ExportCsv = async (req:Request, res:Response) => {
         });
     }
 }
+
+export const Chart =async (req:Request, res:Response) => {
+    
+    try {
+        const manager = getManager();
+
+        const result  = await manager.query(`
+            SELECT DATE_FORMAT(o.created_at, '%Y-%m-%d') as date, SUM(oi.price * oi.quantity) as sum
+            FROM  \`orders\` o
+            JOIN order_items oi on o.id =  oi.order_id
+            GROUP BY date
+        `);
+
+        return res.status(200).json({
+            userMessage: 'Success',
+            developerMessage: "Orders retireved successfully",
+            data: result,
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            userMessage: 'Something went wrong, contact the system admin',
+            developerMessage: error.message,
+            success: false
+        });
+    }
+    
+}
