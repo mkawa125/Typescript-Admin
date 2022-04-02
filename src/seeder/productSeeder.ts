@@ -15,7 +15,6 @@ createConnection().then(async  connection => {
             image: faker.image.imageUrl(200, 200, "", true),
             price: 20000
         })
-        
     }
 
     process.exit(0)

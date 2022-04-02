@@ -1,7 +1,6 @@
 import { User } from "../entity/user.entity";
 import { Request, Response } from "express"
 
-
 export const PermissionMiddleware =  (access: string) => {
      return (req:Request, res:Response, next: Function) => {
 
@@ -23,7 +22,6 @@ export const PermissionMiddleware =  (access: string) => {
                     developerMessage: "User does not have access permissions",
                 })
              }
-             
          }
 
          next();
