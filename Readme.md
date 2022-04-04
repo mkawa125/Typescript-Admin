@@ -11,7 +11,7 @@ ___
 - [x] Roles and permissions and protecting resources according to user permissions
 - [x] Using middlewares
 - [x] Environmental variables
-- [x] Seeders
+- [x] Database seeders
 - [x] Products management. Create, delete, update, view, seed.
 - [x] Orders and order items management. Create order, view orders, update and delete
 - [x] Pagination
@@ -19,14 +19,15 @@ ___
 - [x] Raw queries
 - [x] Permission middlewares
 - [x] Export CSV
-
 ___
 
-Technologies
+### Technologies
+
 - Express
 - Typescript
 - TypeORM
 - SQL
+___
 
 ### Typescript configurations
 
