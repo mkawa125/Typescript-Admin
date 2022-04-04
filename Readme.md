@@ -1,3 +1,34 @@
+### Typescript Admin Skeleton
+
+### Background
+
+This is the complete Typescript admin skeleton for any new project. It is written in typecript and more features are added so that this skeleton can be more compact and more secure.
+___
+
+### Features
+- [x] User authentication. User login, register, logout, session management, JWT
+- [x] User management. Create user, edit, update, delete, manager user profile
+- [x] Roles and permissions and protecting resources according to user permissions
+- [x] Using middlewares
+- [x] Environmental variables
+- [x] Database seeders
+- [x] Products management. Create, delete, update, view, seed.
+- [x] Orders and order items management. Create order, view orders, update and delete
+- [x] Pagination
+- [x] Uploading images
+- [x] Raw queries
+- [x] Permission middlewares
+- [x] Export CSV
+___
+
+### Technologies
+
+- Express
+- Typescript
+- TypeORM
+- SQL
+___
+
 ### Typescript configurations
 
 1. **Create package.json file**
