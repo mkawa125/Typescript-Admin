@@ -1,3 +1,10 @@
+### Typescript Admin Skeleton
+
+### Background
+This is the complete Typescript admin skeleton for any new project. It is written in typecript and more features are added so that this skeleton can be more compact and more secure.
+
+___
+
 ### Typescript configurations
 
 1. **Create package.json file**
