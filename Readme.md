@@ -7,7 +7,6 @@ ___
 
 ### Features
 - [x] User authentication. User login, register, logout, session management, JWT
-- [ ] User authentication. User login, register, logout, session management, JWT
 - [x] User management. Create user, edit, update, delete, manager user profile
 - [x] Roles and permissions and protecting resources according to user permissions
 - [x] Using middlewares
@@ -20,6 +19,14 @@ ___
 - [x] Raw queries
 - [x] Permission middlewares
 - [x] Export CSV
+
+___
+
+Technologies
+- Express
+- Typescript
+- TypeORM
+- SQL
 
 ### Typescript configurations
 
