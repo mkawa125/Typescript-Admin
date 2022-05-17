@@ -4,7 +4,7 @@ import { User } from './../../entity/user.entity';
 
 export const getAllUsers = async (page:any) => {
 
-    const take = 5;
+    const take = 15;
 
     const repository = getManager().getRepository(User)
     const [users, total] =  await repository.findAndCount({
