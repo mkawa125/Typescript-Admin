@@ -2,16 +2,37 @@ import  bcryptjs from 'bcryptjs';
 import { getManager } from 'typeorm';
 import { User } from './../../entity/user.entity';
 
-export const getAllUsers = async () => {
+export const getAllUsers = async (page:any) => {
+
+    const take = 1;
 
     const repository = getManager().getRepository(User)
-    const users =  await repository.find({
-        relations: ['role']
+    const [users, total] =  await repository.findAndCount({
+        relations: ['role'],
+        take,
+        skip: (page - 1) * take
     });
-    return users.map(user => {
-        const {password, ...data} = user;
-        return data
-    });
+
+     
+
+    return {
+        users,
+        meta: {
+            total,
+            page,
+            last_page: Math.ceil(total/take)
+        }
+    };
+
+    // return users.map(user => {
+    //     const {password, ...users} = user;
+    //     return u,
+    //     meta: {
+    //         total,
+    //         page,
+    //         last_page: Math.ceil(total/take)
+    //     }
+    // });
 }
 
 export const createUser = async  (data:any) => {

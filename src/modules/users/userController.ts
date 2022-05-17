@@ -5,7 +5,8 @@ import { Request, Response } from "express"
 export const Users = async (req:Request , res:Response) => {
     
     try {
-        const users = await getAllUsers()
+        const page = parseInt(req.query.page as string || "1")
+        const users = await getAllUsers(page)
         return res.status(200).json({
             userMessage: 'Success',
             developerMessage: "Users retireved successfully",
