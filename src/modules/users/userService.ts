@@ -4,7 +4,7 @@ import { User } from './../../entity/user.entity';
 
 export const getAllUsers = async (page:any) => {
 
-    const take = 1;
+    const take = 15;
 
     const repository = getManager().getRepository(User)
     const [users, total] =  await repository.findAndCount({
@@ -13,26 +13,19 @@ export const getAllUsers = async (page:any) => {
         skip: (page - 1) * take
     });
 
-     
+
 
     return {
-        users,
+        users: users.map(user => {
+            const {password, ...users} = user;
+            return users;
+        }),
         meta: {
             total,
             page,
             last_page: Math.ceil(total/take)
         }
     };
-
-    // return users.map(user => {
-    //     const {password, ...users} = user;
-    //     return u,
-    //     meta: {
-    //         total,
-    //         page,
-    //         last_page: Math.ceil(total/take)
-    //     }
-    // });
 }
 
 export const createUser = async  (data:any) => {
