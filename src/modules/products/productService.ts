@@ -3,7 +3,7 @@ import { Product } from '../../entity/productEntity';
 
 export const getAllProducts = async (page:any) => {
 
-    const take = 15;
+    const take = 6;
 
     const repository = getManager().getRepository(Product)
     const [data, total] =  await repository.findAndCount({
