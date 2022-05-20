@@ -3,7 +3,7 @@ import { getManager } from 'typeorm';
 
 export const getAllOrders = async (page:any) => {
 
-    const take = 15;
+    const take = 10;
 
     const repository = getManager().getRepository(Order)
     const [data, total] =  await repository.findAndCount({
