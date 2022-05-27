@@ -88,3 +88,6 @@ ___
     "ext": "js, json, ts"
 }
 ```
+
+### Supervisor configuration
+https://medium.com/@saif.ullah/ubuntu-setup-for-nodejs-app-to-run-forever-using-supervisor-on-nginx-eba411940832
