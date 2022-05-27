@@ -8,7 +8,9 @@
         "nodemon": "nodemon src/index.ts",
         "roles:seed": "ts-node src/seeder/roleSeeder.ts",
         "products:seed": "ts-node src/seeder/productSeeder.ts",
-        "orders:seed": "ts-node src/seeder/orderSeeder.ts"
+        "orders:seed": "ts-node src/seeder/orderSeeder.ts",
+        "typeorm": "ts-node ./node_modules/.bin/typeorm -f ormconfig.ts"
+
     },
     "keywords": [],
     "author": "",
