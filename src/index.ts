@@ -1,7 +1,6 @@
 import { orderRoutes } from './modules/orders/orderRoutes';
 import { productRoutes } from './modules/products/productRoutes';
 import { userRoutes } from './modules/users/userRoutes';
-require('dotenv').config();
 
 import express, {Request, Response} from 'express';
 import cors from 'cors';
@@ -20,7 +19,7 @@ createConnection().then(connection => {
     app.use(cookieParser());
     app.use(cors({
         credentials: true,
-        origin: ["http://localhost:3000"]
+        origin: process.env.ORIGINS,
     }));
 
     /** Include external routes */
@@ -32,7 +31,8 @@ createConnection().then(connection => {
     orderRoutes(app);
 
     /** Listen to specific port */
-    app.listen(5000, () => {
-        console.log("Listening to port 5000")
+    const PORT = process.env.SERVER_PORT || 5000
+    app.listen(PORT, () => {
+        console.log(`Listening to port ${PORT}`)
     })
 });
