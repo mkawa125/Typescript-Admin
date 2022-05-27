@@ -5,6 +5,7 @@
     "main": "index.js",
     "scripts": {
         "start": "nodemon src/index.ts",
+        "nodemon": "nodemon src/index.ts",
         "roles:seed": "ts-node src/seeder/roleSeeder.ts",
         "products:seed": "ts-node src/seeder/productSeeder.ts",
         "orders:seed": "ts-node src/seeder/orderSeeder.ts"
