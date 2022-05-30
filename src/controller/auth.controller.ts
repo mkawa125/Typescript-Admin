@@ -94,13 +94,23 @@ export const Login = async (req:Request, res:Response) => {
 export const AuthenticateUser = async (req:Request, res:Response) => {
 
     /** Get authenticated user */
-    const {password, ...user} =  await req["user"];
+    try {
+        const {password, ...user} =  await req["user"];
 
         return res.status(200).send({
             message: "Success",
             developerMessage: "User authenticated",
             user: user,
         });
+        
+    } catch (error) {
+        return res.status(401).json({
+            userMessage: 'Invalid Credentials!',
+            developerMessage: error.message,
+            success: false
+        });
+    }
+    
 }
 
 export const Logout = async (req:Request, res:Response) => {

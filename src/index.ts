@@ -19,7 +19,7 @@ createConnection().then(connection => {
     app.use(cookieParser());
     app.use(cors({
         credentials: true,
-        origin: process.env.ORIGINS,
+        origin: process.env.ORIGINS.split(","),
     }));
 
     /** Include external routes */
