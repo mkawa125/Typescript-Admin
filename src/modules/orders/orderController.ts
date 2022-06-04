@@ -82,10 +82,16 @@ export const Chart =async (req:Request, res:Response) => {
             GROUP BY date
         `);
 
+        const totalUsers  = await manager.query(`
+            SELECT COUNT(id) as total FROM \`user\`
+        `);
+
+
         return res.status(200).json({
             userMessage: 'Success',
             developerMessage: "Orders retireved successfully",
             data: result,
+            totalUsers: totalUsers[0]['total'],
         })
 
     } catch (error) {
