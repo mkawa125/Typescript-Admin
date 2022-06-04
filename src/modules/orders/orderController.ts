@@ -86,12 +86,29 @@ export const Chart =async (req:Request, res:Response) => {
             SELECT COUNT(id) as total FROM \`user\`
         `);
 
+        const totalOrders  = await manager.query(`
+            SELECT COUNT(id) as total_orders FROM \`orders\`
+        `);
+
+        const totalProducts  = await manager.query(`
+            SELECT COUNT(id) as total_products FROM \`products\`
+        `);
+
+        const totalSales  = await manager.query(`
+            SELECT SUM(oi.price * oi.quantity) as sum
+            FROM  \`orders\` o
+            JOIN order_items oi on o.id =  oi.order_id
+        `);
+
 
         return res.status(200).json({
             userMessage: 'Success',
             developerMessage: "Orders retireved successfully",
             data: result,
             totalUsers: totalUsers[0]['total'],
+            totalOrders: totalOrders[0]['total_orders'],
+            totalProducts: totalProducts[0]['total_products'],
+            totalSales: totalSales[0]['sum'],
         })
 
     } catch (error) {
