@@ -4,6 +4,8 @@ import { RegisterValidation } from "./validation/register.validation";
 import { getManager } from "typeorm";
 import  bcryptjs  from "bcryptjs";
 import { sign, verify } from "jsonwebtoken";
+import  mailgun  from "mailgun-js";
+import nodemailer from "nodemailer";
 
 export const Register =  async (req: Request, res: Response) => {
 
@@ -181,3 +183,27 @@ export const DeleteUser =async (req:Request, res:Response) => {
         developerMessage: "User deleted successfully"
     }); 
 }
+
+export const SendEmial = async (req:Request, res:Response) => {
+    // const mg = mailgun({apiKey: process.env.MAILGUN_APIKEY, domain: DOMAIN});
+    const mg = mailgun({
+        apiKey: '6c3cddf8e6af6283beed6f1234d45ebe-523596d9-e9529dbc', 
+        domain: 'sandbox09f4db6edee540d39305a3f530e267f8.mailgun.org',
+    });
+
+    /** Define data to be sent to email */
+    const data = {
+        from: 'dahabu@catchuptips.com',
+        to: 'dahabusaidi@gmail.com',
+        subject: 'Hello',
+        text: 'This is the testing email from nodejs API!'
+    };
+    await mg.messages().send(data, function (error, body) {
+
+        console.log(body);
+        
+    })
+
+}
+
+
