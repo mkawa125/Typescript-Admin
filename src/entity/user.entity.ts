@@ -1,5 +1,5 @@
 import { Role } from './roleEntity';
-import {Column, Entity, Generated, JoinColumn, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
+import {Column, CreateDateColumn, DeleteDateColumn, Entity, Generated, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Timestamp, UpdateDateColumn} from "typeorm";
 
 @Entity()
 
@@ -26,6 +26,29 @@ export class User{
     }) 
     @Generated("uuid") 
     uuid: string;
+
+    @CreateDateColumn()
+    created_at: Timestamp;
+
+    @UpdateDateColumn()
+    updated_at: Timestamp
+
+    @DeleteDateColumn()
+    deleted_at: Timestamp
+
+    @Column({
+        default: null,
+        nullable: true,
+
+    })
+    remember_token: string;
+
+    @Column({
+        default: null,
+        nullable: true,
+
+    })
+    remember_token_expire_date: Date;
 
     @ManyToOne(() => Role)
     @JoinColumn({name: 'role_id'})
