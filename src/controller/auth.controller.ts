@@ -185,19 +185,18 @@ export const DeleteUser =async (req:Request, res:Response) => {
 }
 
 export const SendEmaill = async (req:Request, res:Response) => {
-    // const mg = mailgun({apiKey: process.env.MAILGUN_APIKEY, domain: DOMAIN});
     const mg = mailgun({
-        apiKey: '6c3cddf8e6af6283beed6f1234d45ebe-523596d9-e9529dbc', 
-        domain: 'sandbox09f4db6edee540d39305a3f530e267f8.mailgun.org',
+        apiKey: process.env.MAILGUN_APIKEY, 
+        domain: process.env.MAILGUN_DOMAIN
     });
 
-    /** Define data to be sent to email */
     const data = {
         from: 'dahabu@catchuptips.com',
         to: 'dahabusaidi@gmail.com',
-        subject: 'Hello',
-        text: 'This is the testing email from nodejs API!'
+        subject: 'Hello Mkawa',
+        text: '<h3> Keys added to enviromental variable </h3> <br> This is the testing email from nodejs API!'
     };
+
     await mg.messages().send(data, function (error, body) {
 
         console.log(body);
