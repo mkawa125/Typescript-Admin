@@ -184,7 +184,7 @@ export const DeleteUser =async (req:Request, res:Response) => {
     }); 
 }
 
-export const SendEmial = async (req:Request, res:Response) => {
+export const SendEmaill = async (req:Request, res:Response) => {
     // const mg = mailgun({apiKey: process.env.MAILGUN_APIKEY, domain: DOMAIN});
     const mg = mailgun({
         apiKey: '6c3cddf8e6af6283beed6f1234d45ebe-523596d9-e9529dbc', 
