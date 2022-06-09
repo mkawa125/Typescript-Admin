@@ -1,6 +1,6 @@
 import { User } from './../entity/user.entity';
 import { Request, Response } from "express"
-import { RegisterValidation, ResetPasswordValidation } from "./validation/register.validation";
+import { RegisterValidation, ResetPasswordLinkValidation, ResetPasswordValidation } from "./validation/register.validation";
 import { getManager, MoreThan } from "typeorm";
 import  bcryptjs  from "bcryptjs";
 import { sign, verify } from "jsonwebtoken";
@@ -225,7 +225,7 @@ export const SendPasswordResetLink = async (req:Request, res:Response) => {
     try {
         /** Validate the request inputs */
         const body = req.body
-        const {error} = ResetPasswordValidation.validate(body);
+        const {error} = ResetPasswordLinkValidation.validate(body);
         const repository = getManager().getRepository(User);
         const user = await repository.findOne({email: req.body.email});
 
@@ -323,6 +323,48 @@ export const verifyResetToken =async (req:Request, res:Response) => {
             data: user
         }) 
     } catch (error) {
+        return res.status(500).json({
+            userMessage: 'Something went wrong, contact the system admin',
+            developerMessage: error.message,
+            success: false
+        });
+    }
+}
+
+export const ResetPassword = async (req:Request, res:Response) => {
+    try {
+        const body = req.body
+        const {error} = ResetPasswordValidation.validate(body);
+        const repository = getManager().getRepository(User);
+        const user = await repository.findOne({ remember_token: req.params.token, remember_token_expire_date: MoreThan(new Date())});
+
+        if (error) { return res.status(400).send({ success: false, message: error.details })}
+
+        /** Check if user is available and the token is still valid */
+        if (!user) {
+            return res.status(401).json({
+                userMessage: 'Success',
+                developerMessage: `Password reset token is invalid or has expired`,
+            })
+        }
+
+        /** Check if passwords match */
+        if (req.body.password !== req.body.password_confirm) {
+            return res.status(400).send({
+                message: "Passwords does not match",
+                success: false
+            })
+        }
+        
+        await repository.update(user.id, { password: await bcryptjs.hash(req.body.password, 10)});
+        const {password, ...data} = user;
+        return res.status(200).send({
+            message: "Password changed successfully",
+            developerMessage: "Password changed successfully",
+            user: data,
+        }); 
+    } catch (error) {
+        
         return res.status(500).json({
             userMessage: 'Something went wrong, contact the system admin',
             developerMessage: error.message,

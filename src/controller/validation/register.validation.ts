@@ -8,6 +8,11 @@ export const RegisterValidation = Joi.object({
     password_confirm: Joi.string().required(),
 })
 
-export const ResetPasswordValidation = Joi.object({
+export const ResetPasswordLinkValidation = Joi.object({
     email: Joi.string().email().required(),
+})
+
+export const ResetPasswordValidation = Joi.object({
+    password: Joi.string().required(),
+    password_confirm: Joi.string().required(),
 })
