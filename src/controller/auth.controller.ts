@@ -1,11 +1,13 @@
 import { User } from './../entity/user.entity';
 import { Request, Response } from "express"
-import { RegisterValidation } from "./validation/register.validation";
+import { RegisterValidation, ResetPasswordValidation } from "./validation/register.validation";
 import { getManager } from "typeorm";
 import  bcryptjs  from "bcryptjs";
 import { sign, verify } from "jsonwebtoken";
 import  mailgun  from "mailgun-js";
 import nodemailer from "nodemailer";
+import crypto from 'crypto';
+
 
 export const Register =  async (req: Request, res: Response) => {
 
@@ -194,15 +196,80 @@ export const SendEmaill = async (req:Request, res:Response) => {
         from: 'dahabu@catchuptips.com',
         to: 'dahabusaidi@gmail.com',
         subject: 'Hello Mkawa',
-        text: '<h3> Keys added to enviromental variable </h3> <br> This is the testing email from nodejs API!'
+        text: 'Keys added to enviromental variable This is the testing email from nodejs'
     };
 
-    await mg.messages().send(data, function (error, body) {
-
-        console.log(body);
+    try {
         
-    })
+        await mg.messages().send(data)
+        return res.status(200).json({
+            userMessage: 'Success',
+            developerMessage: "Email sent successfully",
+            data: data
+        }) 
+
+    } catch (error) {
+
+        return res.status(500).json({
+            userMessage: 'Something went wrong, contact the system admin',
+            developerMessage: error.message,
+            success: false
+        });
+    }
 
 }
 
+
+export const SendPasswordResetLink = async (req:Request, res:Response) => {
+
+    try {
+        /** Validate the request inputs */
+        const body = req.body
+        const {error} = ResetPasswordValidation.validate(body);
+        const repository = getManager().getRepository(User);
+        const user = await repository.findOne({email: req.body.email});
+
+        if (error) {
+            return res.status(400).send({
+                success: false,
+                message: error.details
+            })
+        }
+
+        if(!user){
+            return res.status(404).send({
+                message: "User with such email not found",
+                success: false
+            })
+        }
+    
+        const tokenObject = {id: user.id, email: user.email};
+        const secret = user.id + '_' + user.email + '_' + new Date().getTime();
+        const token = sign(tokenObject, process.env.SECRET_KEY)
+        // const token = crypto.randomBytes(32).toString('hex');
+
+        const date = new Date();
+        const afterOneHour = date.setTime(date.getTime() + 1 * 60 * 60 * 1000);
+        const dateStringFormat = new Date(afterOneHour);
+
+        /** Update reset_password_token */
+        await repository.update(user.id, {
+            remember_token: token,
+            remember_token_expire_date: dateStringFormat // Expires in one hour
+        });
+        
+        return res.status(200).json({
+            userMessage: 'Success',
+            developerMessage: "Password reset link sent successfully",
+            data: token
+        }) 
+
+    } catch (error) {
+        return res.status(500).json({
+            userMessage: 'Something went wrong, contact the system admin',
+            developerMessage: error.message,
+            success: false
+        });
+    }
+}
 
