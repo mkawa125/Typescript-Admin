@@ -1,6 +1,6 @@
 import { AuthMiddleware } from './middleware/auth.middleware';
 import { Router } from "express";
-import {Register, Login, AuthenticateUser, Logout, UpdateInfo, UpdatePassword, DeleteUser, SendEmaill, SendPasswordResetLink} from "./controller/auth.controller"
+import {Register, Login, AuthenticateUser, Logout, UpdateInfo, UpdatePassword, DeleteUser, SendEmaill, SendPasswordResetLink, verifyResetToken} from "./controller/auth.controller"
 
 export const routes = (router: Router) => {
     router.post('/api/register', Register);
@@ -9,6 +9,8 @@ export const routes = (router: Router) => {
     router.get('/api/user', AuthMiddleware, AuthenticateUser);
     router.put('/api/users/info', AuthMiddleware, UpdateInfo);
     router.put('/api/users/password', AuthMiddleware, UpdatePassword);
-    router.post('/api/users/password-reset-link', AuthMiddleware, SendPasswordResetLink);
+    router.post('/api/users/password-reset-link', SendPasswordResetLink);
+    router.post('/api/users/password-reset-verify/:token', verifyResetToken);
+    router.post('/api/users/password-reset', AuthMiddleware, SendPasswordResetLink);
     router.post('/api/send-email', AuthMiddleware, SendEmaill);
 }

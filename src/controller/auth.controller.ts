@@ -1,7 +1,7 @@
 import { User } from './../entity/user.entity';
 import { Request, Response } from "express"
 import { RegisterValidation, ResetPasswordValidation } from "./validation/register.validation";
-import { getManager } from "typeorm";
+import { getManager, MoreThan } from "typeorm";
 import  bcryptjs  from "bcryptjs";
 import { sign, verify } from "jsonwebtoken";
 import  mailgun  from "mailgun-js";
@@ -302,3 +302,31 @@ const sendResetLinkEmail = async (user: User, link:string) => {
     }
 }
 
+
+export const verifyResetToken =async (req:Request, res:Response) => {
+    try {
+        const repository = getManager().getRepository(User);
+        const user = await repository.findOne({
+            remember_token: req.params.token, 
+            remember_token_expire_date: MoreThan(new Date())});
+
+            if (!user) {
+                return res.status(401).json({
+                    userMessage: 'Success',
+                    developerMessage: `Password reset token is invalid or has expired`,
+                })
+            }
+
+        return res.status(200).json({
+            userMessage: 'Success',
+            developerMessage: `Reset token is available and valid`,
+            data: user
+        }) 
+    } catch (error) {
+        return res.status(500).json({
+            userMessage: 'Something went wrong, contact the system admin',
+            developerMessage: error.message,
+            success: false
+        });
+    }
+}
