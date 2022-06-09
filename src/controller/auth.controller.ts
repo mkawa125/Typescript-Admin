@@ -245,7 +245,7 @@ export const SendPasswordResetLink = async (req:Request, res:Response) => {
     
         const tokenObject = {id: user.id, email: user.email};
         const secret = user.id + '_' + user.email + '_' + new Date().getTime();
-        const token = sign(tokenObject, process.env.SECRET_KEY)
+        const token = sign(tokenObject, secret)
         // const token = crypto.randomBytes(32).toString('hex');
 
         const date = new Date();
@@ -256,20 +256,49 @@ export const SendPasswordResetLink = async (req:Request, res:Response) => {
         await repository.update(user.id, {
             remember_token: token,
             remember_token_expire_date: dateStringFormat // Expires in one hour
-        });
-        
+        })
+        const reset_link = "http://" + req.headers.host + "/api/users/reset/" + user.remember_token;
+        await sendResetLinkEmail(user, reset_link)
+    
         return res.status(200).json({
             userMessage: 'Success',
-            developerMessage: "Password reset link sent successfully",
-            data: token
+            developerMessage: `Password reset link sent successfully to ${user.email}`,
         }) 
-
+        
     } catch (error) {
         return res.status(500).json({
             userMessage: 'Something went wrong, contact the system admin',
             developerMessage: error.message,
             success: false
         });
+    }
+}
+
+const sendResetLinkEmail = async (user: User, link:string) => {
+    try {
+        const mg = mailgun({
+            apiKey: process.env.MAILGUN_APIKEY, 
+            domain: process.env.MAILGUN_DOMAIN
+        });
+    
+        const data = {
+            from: process.env.MAILGUN_FROM,
+            to: user.email,
+            subject: 'Password Change Request',
+            html: `Hi ${user.first_name} <br><br>
+            Please click on the following link ${link} to reset your password. <br><br>
+            If you did not request this, please ignore this email and your password will remain unchanged.<br><br>
+            Thanks<br>
+            Catchuptips Team`,
+        };
+        await mg.messages().send(data)
+
+    } catch (error) {
+        return {
+                userMessage: 'Something went wrong, contact the system admin',
+                developerMessage: error.message,
+                success: false
+        };
     }
 }
 
