@@ -257,12 +257,14 @@ export const SendPasswordResetLink = async (req:Request, res:Response) => {
             remember_token: token,
             remember_token_expire_date: dateStringFormat // Expires in one hour
         })
-        const reset_link = "http://" + req.headers.host + "/api/users/reset/" + user.remember_token;
-        await sendResetLinkEmail(user, reset_link)
+        const updatedUser = await repository.findOne(user.id);
+        const reset_link = req.headers.origin + "/reset-password/" + updatedUser.remember_token;
+
+        await sendResetLinkEmail(updatedUser, reset_link)
     
         return res.status(200).json({
             userMessage: 'Success',
-            developerMessage: `Password reset link sent successfully to ${user.email}`,
+            developerMessage: `Password reset link sent successfully to ${updatedUser.email}`,
         }) 
         
     } catch (error) {
@@ -276,6 +278,7 @@ export const SendPasswordResetLink = async (req:Request, res:Response) => {
 
 const sendResetLinkEmail = async (user: User, link:string) => {
     try {
+
         const mg = mailgun({
             apiKey: process.env.MAILGUN_APIKEY, 
             domain: process.env.MAILGUN_DOMAIN
