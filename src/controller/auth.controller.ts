@@ -258,7 +258,7 @@ export const SendPasswordResetLink = async (req:Request, res:Response) => {
             remember_token_expire_date: dateStringFormat // Expires in one hour
         })
         const updatedUser = await repository.findOne(user.id);
-        const reset_link = req.headers.origin + "/reset-password/" + updatedUser.remember_token;
+        const reset_link = req.headers.origin + "/reset-password/" + updatedUser.remember_token + "/reset";
 
         await sendResetLinkEmail(updatedUser, reset_link)
     
