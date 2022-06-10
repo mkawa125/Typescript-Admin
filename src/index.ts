@@ -9,6 +9,7 @@ import { Connection, createConnection } from "typeorm";
 import cookieParser from 'cookie-parser';
 import { permissionRoutes } from './modules/auth/permissions/permissionRoutes';
 import { roleRoutes } from './modules/auth/roles/roleRoutes';
+import { brandRoutes } from './modules/products/brands/brandRoutes';
 
 createConnection().then(connection => {
     
@@ -29,6 +30,7 @@ createConnection().then(connection => {
     roleRoutes(app);
     productRoutes(app);
     orderRoutes(app);
+    brandRoutes(app);
 
     /** Listen to specific port */
     const PORT = process.env.SERVER_PORT || 5000
