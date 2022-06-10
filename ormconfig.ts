@@ -6,7 +6,7 @@ export = {
         password: process.env.DB_PASSWORD,
         database: process.env.DB_DATABASE,
         entities: [
-            "src/entity/*.ts"
+            "src/entity/*.ts", "src/modules/products/entities/*.ts"
         ],
         logging: false,
         synchronize: true
