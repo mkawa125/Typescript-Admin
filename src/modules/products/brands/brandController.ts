@@ -8,11 +8,11 @@ export const Brands = async (req:Request , res:Response) => {
     
     try {
         const page = parseInt(req.query.page as string || "1")
-        const products = await getAllBrands(page)
+        const brands = await getAllBrands(page)
         return res.status(200).json({
             userMessage: 'Success',
             developerMessage: "Prodcuts retireved successfully",
-            products
+            brands
         })
     } catch (error) {
         return res.status(500).json({
@@ -25,16 +25,12 @@ export const Brands = async (req:Request , res:Response) => {
 
 export const CreateBrand = async (req:Request , res:Response) => {
     try {
-        const body = req.body
-        const {error} = brandValidation.validate(body);
-
-        if (error) { return res.status(400).send({ success: false, message: error.details })}
-
-        const product = await createNewBrand(req.body);
+       
+        const brand = await createNewBrand(req.body);
         return res.status(201).json({
             userMessage: 'Success',
             developerMessage: "Brand created successfully",
-            data: product
+            data: brand
         })
     } catch (error) {
         return res.status(500).json({
@@ -47,11 +43,11 @@ export const CreateBrand = async (req:Request , res:Response) => {
 
 export const GetBrand = async (req:Request , res:Response) => {
     try {
-        const product = await getBrandById(req.params.id)
+        const brand = await getBrandById(req.params.id)
         return res.status(200).json({
             userMessage: 'Success',
             developerMessage: "Brand retrived successfully",
-            data: product
+            data: brand
         })
     } catch (error) {
         return res.status(500).json({
@@ -69,11 +65,11 @@ export const UpdateBrand = async (req:Request, res:Response) => {
 
         if (error) { return res.status(400).send({ success: false, message: error.details })}
 
-        const product = await updateBrandById(req.params.id, req.body)
+        const brand = await updateBrandById(req.params.id, req.body)
         return res.status(202).json({
             userMessage: 'Success',
             developerMessage: "Brand updated successfully",
-            data: product
+            data: brand
         })
     } catch (error) {
         return res.status(500).json({
@@ -86,11 +82,11 @@ export const UpdateBrand = async (req:Request, res:Response) => {
 
 export const DeleteBrand =async (req:Request, res:Response) => {
     try {
-        const product = await deleteBrandById(req.params.id)
+        const brand = await deleteBrandById(req.params.id)
         return res.status(204).json({
             userMessage: 'Success',
             developerMessage: "Brand deleted successfully",
-            data: product
+            data: brand
         })
     } catch (error) {
         return res.status(500).json({
@@ -124,7 +120,7 @@ export const uploadImage = async (req:Request, res:Response) => {
             return res.status(201).json({
                 userMessage: 'Success',
                 developerMessage: "Image uploaded successfully",
-                url: `http://localhost/5000/api/products/upload/${req.file.filename}`
+                url: `http://localhost/5000/api/brands/upload/${req.file.filename}`
             })
         })
         
