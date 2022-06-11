@@ -1,12 +1,12 @@
 import { getManager } from 'typeorm';
-import { ProductCollection } from '../entities/productCollectionEntity';
+import { ProductCategory } from '../entities/productCategoryEntity';
 
 
-export const getAllProductCollections = async (page:any) => {
+export const getAllProductCategories = async (page:any) => {
 
     const take = 10;
 
-    const repository = getManager().getRepository(ProductCollection)
+    const repository = getManager().getRepository(ProductCategory)
     const [data, total] =  await repository.findAndCount({
         take,
         skip: (page - 1) * take
@@ -23,9 +23,9 @@ export const getAllProductCollections = async (page:any) => {
     };
 }
 
-export const createNewProductCollection = async  (data:any) => {
+export const createNewProductCategory = async  (data:any) => {
      
-    const repository = getManager().getRepository(ProductCollection);
+    const repository = getManager().getRepository(ProductCategory);
     const productLabel = await repository.save({
         ...data,
         created_at: new Date().toString(),
@@ -35,31 +35,31 @@ export const createNewProductCollection = async  (data:any) => {
     return productLabel;
 }
 
-export const checkIfProductCollectionExistByName = async (name:string) => {
+export const checkIfProductCategoryExistByName = async (name:string) => {
      
-    const repository = getManager().getRepository(ProductCollection);
-    const checkProductCollection = await repository.findOne({name: name});
+    const repository = getManager().getRepository(ProductCategory);
+    const checkProductCategory = await repository.findOne({name: name});
 
-    return checkProductCollection;
+    return checkProductCategory;
 }
 
-export const getProductCollectionById = async (id:any) => {
-    const repository = getManager().getRepository(ProductCollection)
+export const getProductCategoryById = async (id:any) => {
+    const repository = getManager().getRepository(ProductCategory)
     const productLabel =  await repository.findOne(id);
     
     return productLabel;
 }
 
-export const updateProductCollectionById = async (productLabelId:any, productLabelDetails:any) => {
-    const repository = getManager().getRepository(ProductCollection)
+export const updateProductCategoryById = async (productLabelId:any, productLabelDetails:any) => {
+    const repository = getManager().getRepository(ProductCategory)
     await repository.update(productLabelId, productLabelDetails);
     
     const productLabel = await repository.findOne(productLabelId);
     return productLabel;
 }
 
-export const deleteProductCollectionById =async (productLabelId:any) => {
-    const repository = getManager().getRepository(ProductCollection);
+export const deleteProductCategoryById =async (productLabelId:any) => {
+    const repository = getManager().getRepository(ProductCategory);
     await repository.delete(productLabelId);
     return null;
 }

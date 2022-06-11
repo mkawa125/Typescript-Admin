@@ -1,18 +1,18 @@
-import { checkIfProductCollectionExistByName, createNewProductCollection, deleteProductCollectionById, getAllProductCollections, getProductCollectionById, updateProductCollectionById } from './productCategoryService';
+import { checkIfProductCategoryExistByName, createNewProductCategory, deleteProductCategoryById, getAllProductCategories, getProductCategoryById, updateProductCategoryById } from './productCategoryService';
 import { Request, Response } from "express"
 import multer from 'multer';
 import { extname } from 'path';
-import { productCollectionValidation } from './productCategoryValidation';
+import { productCategoryValidation } from './productCategoryValidation';
 
-export const productCollections = async (req:Request , res:Response) => {
+export const productCategories = async (req:Request , res:Response) => {
     
     try {
         const page = parseInt(req.query.page as string || "1")
-        const productCollections = await getAllProductCollections(page)
+        const productCategories = await getAllProductCategories(page)
         return res.status(200).json({
             userMessage: 'Success',
-            developerMessage: "Prodcut collections retireved successfully",
-            productCollections
+            developerMessage: "Prodcut categories retireved successfully",
+            productCategories
         })
     } catch (error) {
         return res.status(500).json({
@@ -23,10 +23,10 @@ export const productCollections = async (req:Request , res:Response) => {
     }
 }
 
-export const CreateProductCollection = async (req:Request , res:Response) => {
+export const CreateProductCategory = async (req:Request , res:Response) => {
     try {
         const body = req.body;
-        const {error} =  productCollectionValidation.validate(body);
+        const {error} =  productCategoryValidation.validate(body);
         if (error) {
             return res.status(400).send({
                 success: false,
@@ -34,21 +34,21 @@ export const CreateProductCollection = async (req:Request , res:Response) => {
             })
         } 
         
-        const productCollectionsNameExist = await checkIfProductCollectionExistByName(body.name);
-        if (productCollectionsNameExist) {
+        const productCategorysNameExist = await checkIfProductCategoryExistByName(body.name);
+        if (productCategorysNameExist) {
             return res.status(409).json({
-                userMessage: 'product collection already exist',
-                developerMessage: "Product collection with similar name already exist in database",
+                userMessage: 'product category already exist',
+                developerMessage: "Product category with similar name already exist in database",
                 success: false
             });
         }
        
-        /** Continue to create productCollections */
-        const productCollections = await createNewProductCollection(req.body);
+        /** Continue to create productCategorys */
+        const productCategorys = await createNewProductCategory(req.body);
         return res.status(201).json({
             userMessage: 'Success',
-            developerMessage: "product collection created successfully",
-            data: productCollections
+            developerMessage: "product category created successfully",
+            data: productCategorys
         });
     } catch (error) {
         return res.status(500).json({
@@ -59,13 +59,13 @@ export const CreateProductCollection = async (req:Request , res:Response) => {
     }
 }
 
-export const GetProductCollection = async (req:Request , res:Response) => {
+export const GetProductCategory = async (req:Request , res:Response) => {
     try {
-        const productCollections = await getProductCollectionById(req.params.id)
+        const productCategorys = await getProductCategoryById(req.params.id)
         return res.status(200).json({
             userMessage: 'Success',
-            developerMessage: "Product collection retrived successfully",
-            data: productCollections
+            developerMessage: "Product category retrived successfully",
+            data: productCategorys
         })
     } catch (error) {
         return res.status(500).json({
@@ -76,18 +76,18 @@ export const GetProductCollection = async (req:Request , res:Response) => {
     }
 }
 
-export const UpdateProductCollection = async (req:Request, res:Response) => {
+export const UpdateProductCategory = async (req:Request, res:Response) => {
     try {
         const body = req.body
-        const {error} = productCollectionValidation.validate(body);
+        const {error} = productCategoryValidation.validate(body);
 
         if (error) { return res.status(400).send({ success: false, message: error.details })}
 
-        const productCollections = await updateProductCollectionById(req.params.id, req.body)
+        const productCategory = await updateProductCategoryById(req.params.id, req.body)
         return res.status(202).json({
             userMessage: 'Success',
-            developerMessage: "Product collection updated successfully",
-            data: productCollections
+            developerMessage: "Product category updated successfully",
+            data: productCategory
         })
     } catch (error) {
         return res.status(500).json({
@@ -98,13 +98,13 @@ export const UpdateProductCollection = async (req:Request, res:Response) => {
     }
 }
 
-export const DeleteProductCollection =async (req:Request, res:Response) => {
+export const DeleteProductCategory =async (req:Request, res:Response) => {
     try {
-        const productCollections = await deleteProductCollectionById(req.params.id)
+        const productCategories = await deleteProductCategoryById(req.params.id)
         return res.status(204).json({
             userMessage: 'Success',
-            developerMessage: "Product collection deleted successfully",
-            data: productCollections
+            developerMessage: "Product category deleted successfully",
+            data: productCategories
         })
     } catch (error) {
         return res.status(500).json({
@@ -118,7 +118,7 @@ export const DeleteProductCollection =async (req:Request, res:Response) => {
 export const uploadImage = async (req:Request, res:Response) => {
     try {
         const storage = multer.diskStorage({
-            destination: './uploads/product_abels',
+            destination: './uploads/product_categories',
             filename(req:Request, file:Express.Multer.File, callback){
                 const randomName =  Math.random().toString(20).substr(2, 12);
                 return callback(null, `${randomName}${extname(file.originalname)}`)
@@ -138,7 +138,7 @@ export const uploadImage = async (req:Request, res:Response) => {
             return res.status(201).json({
                 userMessage: 'Success',
                 developerMessage: "Image uploaded successfully",
-                url: `http://localhost/5000/api/productCollections/upload/${req.file.filename}`
+                url: `http://localhost/5000/api/productCategories/upload/${req.file.filename}`
             })
         })
         
