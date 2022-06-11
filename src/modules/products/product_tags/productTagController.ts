@@ -1,18 +1,18 @@
-import { checkIfProductLabelExistByName, createNewProductLabel, deleteProductLabelById, getAllProductLabels, getProductLabelById, updateProductLabelById } from './productLabelService';
+import { checkIfProductTagExistByName, createNewProductTag, deleteProductTagById, getAllProductTags, getProductTagById, updateProductTagById } from './productTagService';
 import { Request, Response } from "express"
 import multer from 'multer';
 import { extname } from 'path';
-import { productLabelValidation } from './productLabelValidation';
+import { productTagValidation } from './productTagValidation';
 
-export const productLabels = async (req:Request , res:Response) => {
+export const productTags = async (req:Request , res:Response) => {
     
     try {
         const page = parseInt(req.query.page as string || "1")
-        const productLabels = await getAllProductLabels(page)
+        const productTags = await getAllProductTags(page)
         return res.status(200).json({
             userMessage: 'Success',
-            developerMessage: "Prodcut labels retireved successfully",
-            productLabels
+            developerMessage: "Prodcut tags retireved successfully",
+            productTags
         })
     } catch (error) {
         return res.status(500).json({
@@ -23,10 +23,10 @@ export const productLabels = async (req:Request , res:Response) => {
     }
 }
 
-export const CreateproductLabel = async (req:Request , res:Response) => {
+export const CreateProductTag = async (req:Request , res:Response) => {
     try {
         const body = req.body;
-        const {error} =  productLabelValidation.validate(body);
+        const {error} =  productTagValidation.validate(body);
         if (error) {
             return res.status(400).send({
                 success: false,
@@ -34,21 +34,21 @@ export const CreateproductLabel = async (req:Request , res:Response) => {
             })
         } 
         
-        const productLabelsNameExist = await checkIfProductLabelExistByName(body.name);
-        if (productLabelsNameExist) {
+        const productTagNameExist = await checkIfProductTagExistByName(body.name);
+        if (productTagNameExist) {
             return res.status(409).json({
-                userMessage: 'product label already exist',
-                developerMessage: "product label with similar name already exist in database",
+                userMessage: 'product tag already exist',
+                developerMessage: "product tag with similar name already exist in database",
                 success: false
             });
         }
        
-        /** Continue to create productLabels */
-        const productLabels = await createNewProductLabel(req.body);
+        /** Continue to create productTag */
+        const productTag = await createNewProductTag(req.body);
         return res.status(201).json({
             userMessage: 'Success',
-            developerMessage: "product label created successfully",
-            data: productLabels
+            developerMessage: "product tag created successfully",
+            data: productTag
         });
     } catch (error) {
         return res.status(500).json({
@@ -59,13 +59,13 @@ export const CreateproductLabel = async (req:Request , res:Response) => {
     }
 }
 
-export const GetproductLabel = async (req:Request , res:Response) => {
+export const GetProductTag = async (req:Request , res:Response) => {
     try {
-        const productLabels = await getProductLabelById(req.params.id)
+        const productTag = await getProductTagById(req.params.id)
         return res.status(200).json({
             userMessage: 'Success',
-            developerMessage: "product label retrived successfully",
-            data: productLabels
+            developerMessage: "product tag retrived successfully",
+            data: productTag
         })
     } catch (error) {
         return res.status(500).json({
@@ -76,18 +76,18 @@ export const GetproductLabel = async (req:Request , res:Response) => {
     }
 }
 
-export const UpdateproductLabel = async (req:Request, res:Response) => {
+export const UpdateProductTag = async (req:Request, res:Response) => {
     try {
         const body = req.body
-        const {error} = productLabelValidation.validate(body);
+        const {error} = productTagValidation.validate(body);
 
         if (error) { return res.status(400).send({ success: false, message: error.details })}
 
-        const productLabels = await updateProductLabelById(req.params.id, req.body)
+        const productTag = await updateProductTagById(req.params.id, req.body)
         return res.status(202).json({
             userMessage: 'Success',
-            developerMessage: "product label updated successfully",
-            data: productLabels
+            developerMessage: "product tag updated successfully",
+            data: productTag
         })
     } catch (error) {
         return res.status(500).json({
@@ -98,13 +98,13 @@ export const UpdateproductLabel = async (req:Request, res:Response) => {
     }
 }
 
-export const DeleteproductLabel =async (req:Request, res:Response) => {
+export const DeleteProductTag =async (req:Request, res:Response) => {
     try {
-        const productLabels = await deleteProductLabelById(req.params.id)
+        const productTag = await deleteProductTagById(req.params.id)
         return res.status(204).json({
             userMessage: 'Success',
-            developerMessage: "product label deleted successfully",
-            data: productLabels
+            developerMessage: "product tag deleted successfully",
+            data: productTag
         })
     } catch (error) {
         return res.status(500).json({
@@ -138,7 +138,7 @@ export const uploadImage = async (req:Request, res:Response) => {
             return res.status(201).json({
                 userMessage: 'Success',
                 developerMessage: "Image uploaded successfully",
-                url: `http://localhost/5000/api/productLabels/upload/${req.file.filename}`
+                url: `http://localhost/5000/api/productTags/upload/${req.file.filename}`
             })
         })
         
