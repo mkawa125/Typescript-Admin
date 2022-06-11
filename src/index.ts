@@ -10,6 +10,7 @@ import cookieParser from 'cookie-parser';
 import { permissionRoutes } from './modules/auth/permissions/permissionRoutes';
 import { roleRoutes } from './modules/auth/roles/roleRoutes';
 import { brandRoutes } from './modules/products/brands/brandRoutes';
+import { productLabelRoutes } from './modules/products/product_lables/productLabelRoutes';
 
 createConnection().then(connection => {
     
@@ -31,6 +32,7 @@ createConnection().then(connection => {
     productRoutes(app);
     orderRoutes(app);
     brandRoutes(app);
+    productLabelRoutes(app);
 
     /** Listen to specific port */
     const PORT = process.env.SERVER_PORT || 5000
