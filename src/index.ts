@@ -14,6 +14,8 @@ import { productLabelRoutes } from './modules/products/product_lables/productLab
 import { productTagRoutes } from './modules/products/product_tags/productTagRoutes';
 import { productCollectionRoutes } from './modules/products/product_collections/productCollectionRoutes';
 import { productCategoryRoutes } from './modules/products/product_categories/productCategoryRoutes';
+import { productAttributeSetRoutes } from './modules/products/product_attribute_sets/productAttributeSetRoutes';
+import { productAttributeRoutes } from './modules/products/product_attributes/productAttributeRoutes';
 
 createConnection().then(connection => {
     
@@ -39,6 +41,8 @@ createConnection().then(connection => {
     productTagRoutes(app);
     productCollectionRoutes(app);
     productCategoryRoutes(app);
+    productAttributeSetRoutes(app);
+    productAttributeRoutes(app);
 
     /** Listen to specific port */
     const PORT = process.env.SERVER_PORT || 5000
