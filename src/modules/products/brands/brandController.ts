@@ -1,4 +1,4 @@
-import { createNewBrand, deleteBrandById, getAllBrands, getBrandById, updateBrandById } from './brandService';
+import { checkIfBrandExistByName, createNewBrand, deleteBrandById, getAllBrands, getBrandById, updateBrandById } from './brandService';
 import { Request, Response } from "express"
 import multer from 'multer';
 import { extname } from 'path';
@@ -25,13 +25,31 @@ export const Brands = async (req:Request , res:Response) => {
 
 export const CreateBrand = async (req:Request , res:Response) => {
     try {
+        const body = req.body;
+        const {error} =  brandValidation.validate(body);
+        if (error) {
+            return res.status(400).send({
+                success: false,
+                message: error.details
+            })
+        } 
+        
+        const brandNameExist = await checkIfBrandExistByName(body.name);
+        if (brandNameExist) {
+            return res.status(409).json({
+                userMessage: 'Brand already exist',
+                developerMessage: "Brand with similar name already exist in database",
+                success: false
+            });
+        }
        
+        /** Continue to create brand */
         const brand = await createNewBrand(req.body);
         return res.status(201).json({
             userMessage: 'Success',
             developerMessage: "Brand created successfully",
             data: brand
-        })
+        });
     } catch (error) {
         return res.status(500).json({
             userMessage: 'Something went wrong, contact the system admin',

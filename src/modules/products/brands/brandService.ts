@@ -1,5 +1,6 @@
 import { getManager } from 'typeorm';
 import { Brand } from '../entities/brandEntity';
+import { brandValidation } from './brandValidation';
 
 
 export const getAllBrands = async (page:any) => {
@@ -24,7 +25,7 @@ export const getAllBrands = async (page:any) => {
 }
 
 export const createNewBrand = async  (data:any) => {
-    
+     
     const repository = getManager().getRepository(Brand);
     const brand = await repository.save({
         ...data,
@@ -33,6 +34,14 @@ export const createNewBrand = async  (data:any) => {
     });
 
     return brand;
+}
+
+export const checkIfBrandExistByName = async (name:string) => {
+     
+    const repository = getManager().getRepository(Brand);
+    const checkBrand = await repository.findOne({name: name});
+
+    return checkBrand;
 }
 
 export const getBrandById = async (id:any) => {
