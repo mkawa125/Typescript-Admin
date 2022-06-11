@@ -12,6 +12,7 @@ import { roleRoutes } from './modules/auth/roles/roleRoutes';
 import { brandRoutes } from './modules/products/brands/brandRoutes';
 import { productLabelRoutes } from './modules/products/product_lables/productLabelRoutes';
 import { productTagRoutes } from './modules/products/product_tags/productTagRoutes';
+import { productCollectionRoutes } from './modules/products/product_collections/productCollectionRoutes';
 
 createConnection().then(connection => {
     
@@ -35,6 +36,7 @@ createConnection().then(connection => {
     brandRoutes(app);
     productLabelRoutes(app);
     productTagRoutes(app);
+    productCollectionRoutes(app);
 
     /** Listen to specific port */
     const PORT = process.env.SERVER_PORT || 5000
