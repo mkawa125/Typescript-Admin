@@ -11,7 +11,7 @@ export const productLabels = async (req:Request , res:Response) => {
         const productLabelss = await getAllProductLabels(page)
         return res.status(200).json({
             userMessage: 'Success',
-            developerMessage: "Prodcuts retireved successfully",
+            developerMessage: "Prodcut labels retireved successfully",
             productLabelss
         })
     } catch (error) {
@@ -37,8 +37,8 @@ export const CreateproductLabel = async (req:Request , res:Response) => {
         const productLabelsNameExist = await checkIfProductLabelExistByName(body.name);
         if (productLabelsNameExist) {
             return res.status(409).json({
-                userMessage: 'productLabel already exist',
-                developerMessage: "productLabel with similar name already exist in database",
+                userMessage: 'product label already exist',
+                developerMessage: "product label with similar name already exist in database",
                 success: false
             });
         }
@@ -47,7 +47,7 @@ export const CreateproductLabel = async (req:Request , res:Response) => {
         const productLabels = await createNewProductLabel(req.body);
         return res.status(201).json({
             userMessage: 'Success',
-            developerMessage: "productLabel created successfully",
+            developerMessage: "product label created successfully",
             data: productLabels
         });
     } catch (error) {
@@ -64,7 +64,7 @@ export const GetproductLabel = async (req:Request , res:Response) => {
         const productLabels = await getProductLabelById(req.params.id)
         return res.status(200).json({
             userMessage: 'Success',
-            developerMessage: "productLabel retrived successfully",
+            developerMessage: "product label retrived successfully",
             data: productLabels
         })
     } catch (error) {
