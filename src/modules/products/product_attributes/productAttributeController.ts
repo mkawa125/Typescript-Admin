@@ -34,11 +34,11 @@ export const CreateProductAttribute = async (req:Request , res:Response) => {
             })
         } 
         
-        const productAttributesNameExist = await checkIfProductAttributeExistByName(body.name);
+        const productAttributesNameExist = await checkIfProductAttributeExistByName(body.title);
         if (productAttributesNameExist) {
             return res.status(409).json({
                 userMessage: 'product attribute already exist',
-                developerMessage: "Product attribute with similar name already exist in database",
+                developerMessage: "Product attribute with similar title already exist in database",
                 success: false
             });
         }
