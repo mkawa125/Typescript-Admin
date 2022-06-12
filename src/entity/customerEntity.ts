@@ -20,10 +20,10 @@ export class Customer{
     @Column()
     avatar: string;
 
+
     @Column({
-        default: null,
         nullable: true,
-        type: 'datetime'
+        type: 'date'
 
     })
     dob: Date;
@@ -34,6 +34,7 @@ export class Customer{
 
     })
     phone: string;
+
 
     @Column({
         unique: true
@@ -57,8 +58,8 @@ export class Customer{
     })
     remember_token: string;
 
-    @Column()
-    email_verified_at: string;
+    @Column({nullable: true})
+    email_verified_at: Date;
 
     @Column({
         default: null,
